@@ -53,9 +53,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-
     - name: Set up Gradle 8.7
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -63,6 +60,9 @@ jobs:
 
     - name: Build Android APK
       run: |
+        echo "=== Accepting Android SDK Licenses ==="
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
         if [ ! -f "./gradlew" ]; then
           echo "Generating Gradle wrapper..."
           gradle wrapper --gradle-version 8.7
